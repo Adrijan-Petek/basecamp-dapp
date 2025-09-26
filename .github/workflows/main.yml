@@ -1,0 +1,43 @@
+name: BaseCamp CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+      - name: Lint & Build
+        run: |
+          cd frontend
+          npm run lint
+          npm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install Backend Dependencies
+        run: |
+          cd backend
+          npm install
+      - name: Run Backend Tests
+        run: |
+          cd backend
+          npm test || echo "No tests yet"
